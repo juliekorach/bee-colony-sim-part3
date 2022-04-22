@@ -11,6 +11,7 @@
 #include <SFML/Graphics.hpp>
 #include "World.hpp"
 #include "Flower.hpp"
+#include "FlowerGenerator.hpp"
 
 class Env {
 
@@ -27,9 +28,10 @@ public :
    bool addFlowerAt(const Vec2d& p);
    void drawFlowerZone(sf::RenderTarget& target, Vec2d const& position);
    World& getWorld();
-   std::vector<Flower *> & getFlowers();
+   std::vector<Flower *>& getFlowers();
 private :
-   World ground_;
+   World* ground_;
    std::vector<Flower*> flowers_;
+   FlowerGenerator flowerGenerator_;
 };
 

@@ -13,8 +13,10 @@
 #include <SFML/Graphics.hpp>
 #include "Collider.hpp"
 #include "Utility/Utility.hpp"
+#include "Interface/Drawable.hpp"
+#include "Interface/Updatable.hpp"
 
-class Flower : public Collider {
+class Flower : public Collider, public Drawable, public Updatable {
 public:
    Flower(double const& p, double const& r, Vec2d const& c);
    ~Flower() = default;

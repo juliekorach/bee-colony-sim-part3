@@ -37,7 +37,7 @@ void World::reloadConfig()
 
 }
 
-void World::drawOn(sf::RenderTarget& target)
+void World::drawOn(sf::RenderTarget& target) const
 {
 
     if (getAppConfig().showHumidity())
@@ -271,7 +271,7 @@ void World::step()
             if (bernoulli(proba))
             {
                 int x = uniform(0, nbCells_-1);
-                int y = uniform(0, nbCells_-1) ;
+                int y = uniform(0, nbCells_-1);
                 sf::Vector2i co(x, y);
                 seeds_[i].coordinates = co;
                 setCellType(x, y, Kind::Eau);

@@ -9,6 +9,7 @@
 
 #include <Utility/Vec2d.hpp>
 #include <SFML/Graphics.hpp>
+#include "Interface/Drawable.hpp"
 
 enum class Kind : short {Herbe,Eau,Roche};
 struct Seed
@@ -17,7 +18,7 @@ struct Seed
   Kind type;
 };
 
-class World
+class World : public Drawable
 
 {
 public:
@@ -42,7 +43,7 @@ public:
    *
    * @param RenderTarget target
    */
-  void drawOn(sf::RenderTarget& target);
+  void drawOn(sf::RenderTarget& target) const;
 
   /**
    * @brief translates each cell in cells_ into a vertex set

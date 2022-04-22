@@ -44,9 +44,7 @@ void Flower::update(sf::Time dt)
         } while (getAppEnv().getWorld().isGrowable(newCenter)==false and a<100);
         if ((getAppEnv().getWorld().isGrowable(newCenter)))
         {
-            Flower *newFlower = new Flower(pollen,getAppConfig().flower_manual_size,newCenter);
-            std::vector<Flower *> flowers_list = getAppEnv().getFlowers();
-            std::cout << "Created flower pollen:" << newFlower << " number:" << flowers_list.size() << " at:" << newCenter.x() << "," << newCenter.y() << std::endl;
+            Flower* newFlower = new Flower(pollen,getAppConfig().flower_manual_size,newCenter);
             getAppEnv().getFlowers().push_back(newFlower);
         }
     }
