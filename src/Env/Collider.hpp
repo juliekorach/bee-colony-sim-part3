@@ -176,8 +176,8 @@ public:
 
 
 private:
-  Vec2d center;
-  double radius;
+  Vec2d center_;
+  double radius_;
 
 };
 

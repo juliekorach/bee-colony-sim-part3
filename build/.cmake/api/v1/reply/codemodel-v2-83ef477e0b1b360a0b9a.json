@@ -1,0 +1,96 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Bee_Colony_Simulator_SSV_2022_STEP4",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "application-run::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-application-run-Debug-9083e7319612e1ea944d.json",
+					"name" : "application-run",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "colliderTest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-colliderTest-Debug-c1fe1da7e0da6f341a1c.json",
+					"name" : "colliderTest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "flowerTest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-flowerTest-Debug-cdb3a0a0f344424e65ad.json",
+					"name" : "flowerTest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hiveTest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hiveTest-Debug-f08a6f1e9185e7c20a01.json",
+					"name" : "hiveTest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "worldTest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-worldTest-Debug-32315587283cfada9fb8.json",
+					"name" : "worldTest",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/julie/Desktop/EPFL/BA2/Prog/Projet/partie4/build",
+		"source" : "C:/Users/julie/Desktop/EPFL/BA2/Prog/Projet/partie4/src"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

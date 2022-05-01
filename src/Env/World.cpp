@@ -11,7 +11,7 @@
 
 
 
-int World::index(int x, int y)
+int World::index(int x, int y) const
 {
     return y * nbCells_ + x;
 }
@@ -34,7 +34,6 @@ void World::reloadConfig()
     {
         ++humidityRange_;
     }
-
 }
 
 void World::drawOn(sf::RenderTarget& target) const
@@ -49,7 +48,14 @@ void World::drawOn(sf::RenderTarget& target) const
         sf::Sprite cache(renderingCache_.getTexture());
         target.draw(cache);
     }
-
+    if(isDebugOn()){
+        Vec2d curseur=getApp().getCursorPositionInView();
+        int x = curseur.x() / cellsSize_;
+        int y = curseur.y() / cellsSize_;
+        double text_to_display = humidity_[y * nbCells_ + x];
+        auto const text = buildText(to_nice_string(text_to_display), curseur, getAppFont(), 30, sf::Color::Red);
+        target.draw(text);
+    }
 }
 
 void World::reloadCacheStructure()
@@ -146,6 +152,7 @@ void World::updateCache()
 
 void World::reset(bool regenerate)
 {
+
     reloadConfig();
     reloadCacheStructure();
 
@@ -162,6 +169,7 @@ void World::reset(bool regenerate)
         }
         else
         {
+
             seeds_[h].type = Kind::Eau;
             cells_[index(x, y)] = Kind::Eau;
         }
@@ -271,7 +279,7 @@ void World::step()
             if (bernoulli(proba))
             {
                 int x = uniform(0, nbCells_-1);
-                int y = uniform(0, nbCells_-1);
+                int y = uniform(0, nbCells_-1) ;
                 sf::Vector2i co(x, y);
                 seeds_[i].coordinates = co;
                 setCellType(x, y, Kind::Eau);
@@ -416,8 +424,8 @@ void World::setHumidity()
     maxHumidity_=0;
     minHumidity_=DBL_MAX;
     double distance;
+    humidity_.assign(nbCells_*nbCells_,0.0);
 
-    this->humidity_.assign(nbCells_*nbCells_, 0.0);
     for (int i(0); i<nbCells_*nbCells_; ++i)
     {
         if (cells_[i]==Kind::Eau)
@@ -429,7 +437,7 @@ void World::setHumidity()
             {
                 for (int l(x-humidityRange_); l <= (x+humidityRange_); ++l)
                 {
-                    if(l>=0 and l<nbCells_ and k>=0 and k<nbCells_)
+                    if (l>=0 and l<nbCells_ and k>=0 and k<nbCells_)
                     {
                         distance=std::hypot(l-x,k-y);
 
@@ -448,7 +456,14 @@ void World::setHumidity()
 bool World::isGrowable(const Vec2d& p){
     double i = p.x() / cellsSize_;
     double j = p.y() / cellsSize_;
-    return (cells_[index(i,j)] == Kind::Herbe );
+    return (cells_[index(i,j)] == Kind::Herbe);
+}
+
+bool World::isFlyable(Vec2d const& p)
+{
+    double i = p.x() / cellsSize_;
+    double j = p.y() / cellsSize_;
+    return (cells_[index(i,j)] == Kind::Herbe or cells_[index(i,j)]==Kind::Eau);
 }
 
 double World::getHumidity(const Vec2d& center)
@@ -456,7 +471,140 @@ double World::getHumidity(const Vec2d& center)
     return humidity_[index(center.x()/cellsSize_, center.y()/cellsSize_)];
 }
 
+/**std::vector<std::size_t> World::indexesForRect(Vec2d const& topLeft, Vec2d const& bottomRight) const
+{
+    int tlx = int(topLeft.x());
+    int tly = int(topLeft.y());
+    int brx = int(bottomRight.x());
+    int bry = int(bottomRight.y());
+    // Handle toric world coordinates for rectangles:
+    if (tlx >= 0 and tly >= 0 and brx < nbCells_ and bry < nbCells_)
+    {
 
+        // case 1) if topLeft and bottomRight are really what they should be,
+        //         then the rectangle is not wrapped around the toric world.
+    }
+    //
+    // if (tlx < 0 and tly >= nbCells_ and brx >= 0 and bry < nbCells_)
+
+    // case 2) if topLeft and bottomRight are swapped,
+    //         then bottomRight was actually outside.
+    // case 3) if the left and right sides are swapped,
+    //         then the rectangle is wrapped on the right side of the world.
+    // case 4) if the top and bottom sides are swapped,
+    //         then the rectangle is swapped on the bottom side of the world.
+    //
+    // Graphically, where `*` is topLeft and `%` is bottomRight
+    // and `o` and `x` are the area covered by the rectangle:
+    std::vector<size_t> allcells;
+    std::vector<size_t> cells;
+    sf::Vector2i newtl;
+    sf::Vector2i newbr;
+
+    if (tlx < 0) {
+        if (tly >= 0 and brx >= 0 and bry >= 0) {
+            newtl.x = 0;
+            newtl.y = tly;
+            allcells = nonToricIndexes(newtl, bottomRight);
+            newtl.x = tlx + nbCells_;
+            newbr.x = nbCells_ - 1;
+            newbr.x = brx;
+            newbr.y = bry;
+            cells = nonToricIndexes(newtl, newbr);
+            allcells.insert(allcells.end(), cells.begin(), cells.end());
+
+        }
+        if(tly < 0 and brx >= 0 and bry >= 0)
+        {
+            newtl.x=0;
+            newtl.y=0;
+            allcells = nonToricIndexes(newtl,bottomRight);
+            newtl.x = tlx + nbCells_;
+            newtl.y = tly + nbCells_;
+            newbr.x = nbCells_ - 1;
+            newbr.y = nbCells_ - 1;
+            cells = cells = nonToricIndexes(newtl, newbr);
+            allcells.insert(allcells.end(), cells.begin(), cells.end());
+            newtl.x = 0;
+            newtl.y = nbCells_ + tly;
+            newbr.x = brx;
+            newbr.y = nbCells_ - 1;
+            cells = cells = nonToricIndexes(newtl, newbr);
+            allcells.insert(allcells.end(), cells.begin(), cells.end());
+            newtl.x = tlx + nbCells_;
+            newtl.y = 0;
+            newbr.x = nbCells_ - 1;
+            newbr.y = bry;
+            cells = cells = nonToricIndexes(newtl, newbr);
+            allcells.insert(allcells.end(), cells.begin(), cells.end());
+        }
+
+
+    }
+
+    //
+    //       case 1                case 3
+    //    +---------+           +---------+
+    //    |         |           |         |
+    //    | *--+    |        *--|-+    *--|
+    //    | |xx|    |        |oo|x|    |xx|
+    //    | +--%    |        +--|-%    +--|
+    //    |         |           |         |
+    //    +---------+           +---------+
+    //
+    // *----+
+    // |oo o|case 2                case 4
+    // |  +---------+           +---------+
+    // |oo|x|    |xx|           |   |xx|  |
+    // +--|-%    +--|           |   +--%  |
+    //    |         |           |         |
+    //    |-+    *--|           |   *--+  |
+    //    |x|    |xx|           |   |xx|  |
+    //    +---------+           +---------+
+    //                              |oo|
+    //                              +--%
+    // Remembering the axes:
+    //
+    //   +---> x
+    //   |
+    //   |
+    //   Ë…
+    //   y
+    //
+
+}
+
+std::vector<std::size_t> World::nonToricIndexes(Vec2d const& topLeft, Vec2d const& bottomRight) const
+{
+    //       case 1
+    //    +---------+
+    //    |         |
+    //    | *--+    |
+    //    | |xx|    |
+    //    | +--%    |
+    //    |         |
+    //    +---------+
+
+    std::vector<std::size_t> cells;
+    for (int i(topLeft.x()); i <= bottomRight.x(); ++i)
+    {
+        for (int j(topLeft.y()); j<= bottomRight.y(); ++j)
+        {
+            cells.push_back(size_t(index(i,j)));
+        }
+    }
+    return cells;
+}
+
+
+bool World::isHiveable(const Vec2d& position, double radius){
+
+    Vec2d bottomRight(position.x()+radius,position.y()+radius);
+    Vec2d topLeft(position.x()-radius,position.y()-radius);
+
+    return true;
+}
+**/
 
 
 

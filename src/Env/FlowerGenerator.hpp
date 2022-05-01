@@ -1,7 +1,3 @@
-#ifndef FLOWERGENERATOR_HPP
-#define FLOWERGENERATOR_HPP
-
-#endif // FLOWERGENERATOR_HPP
 
 /*
 * POOSV EPFL 2022
@@ -19,13 +15,29 @@ class FlowerGenerator
 
 public:
 
-    FlowerGenerator()=default;
+  /**
+    * @brief contructor
+    */
+  FlowerGenerator();
 
-    void update(sf::Time dt);
+  /**
+    * @brief destructor
+    */
+  ~FlowerGenerator() = default;
 
-    void reset();
+  /**
+    * @brief manages the evolution of its instances at each time step dt
+    *
+    * @param Time dt
+    */
+  void update(sf::Time dt);
+
+  /**
+    * @brief resets its time counter to zero
+    */
+  void reset();
 
 private:
-
-    sf::Time counter;
+  sf::Time counter;
 };
+

@@ -5,12 +5,12 @@
 #include <iostream>
 
 Collider::Collider(Vec2d const& c, double const& r)
-    : center(c), radius(r)
-{ center = clamp(center); }
+    : center_(c), radius_(r)
+{ center_ = clamp(center_); }
 
 Collider::Collider(const Collider& co)
-    : center(co.center),radius(co.radius)
-{ center = clamp(center); }
+    : center_(co.center_),radius_(co.radius_)
+{ center_ = clamp(center_); }
 
 
 Vec2d clamp(Vec2d const& center)
@@ -45,18 +45,18 @@ Vec2d clamp(Vec2d const& center)
 
 double Collider::getRadius() const
 {
-    return radius;
+    return radius_;
 }
 
 const Vec2d& Collider::getPosition() const
 {
-    return center;
+    return center_;
 }
 
 Collider& Collider::operator=(Collider const& co)
 {
-    radius = co.radius;
-    center = co.center;
+    radius_ = co.radius_;
+    center_ = co.center_;
     return *this;
 }
 
@@ -67,25 +67,25 @@ Vec2d Collider::directionTo(const Vec2d to) const
     static const auto height = worldSize.y(); // hauteur
 
     Vec2d bestTo = to;
-    double shortest = distance(center, to);
+    double shortest = distance(center_, to);
     for (int i(-1); i<=1; ++i) // on modifie d'abord la largeur puis la hauteur
     {
         for(int j(-1); j<=1; ++j)
         {
             Vec2d newto(to.x()+i*width,to.y()+j*height);
-            if(distance(center, newto)<shortest)
+            if(distance(center_, newto)<shortest)
             {
-                shortest = distance(center,newto);
+                shortest = distance(center_,newto);
                 bestTo = newto;
             }
         }
     }
-    return bestTo-center;
+    return bestTo-center_;
 }
 
 Vec2d Collider::directionTo(const Collider& co) const
 {
-    return directionTo(co.center);
+    return directionTo(co.center_);
 }
 
 double Collider::distanceTo(const Vec2d to) const
@@ -96,13 +96,13 @@ double Collider::distanceTo(const Vec2d to) const
 
 double Collider::distanceTo(const Collider& co) const
 {
-    return distanceTo(co.center);
+    return distanceTo(co.center_);
 }
 
 void Collider::move(const Vec2d& dx)
 {
-    center = center + dx;
-    center = clamp(center);
+    center_ = center_ + dx;
+    center_ = clamp(center_);
 }
 
 Collider& Collider::operator+=(const Vec2d& dx)
@@ -113,7 +113,7 @@ Collider& Collider::operator+=(const Vec2d& dx)
 
 bool Collider::isColliderInside(const Collider& other) const
 {
-    if(radius>=other.radius and distanceTo(other.center)<=(radius - other.radius))
+    if(radius_>=other.radius_ and distanceTo(other.center_)<=(radius_ - other.radius_))
     {
         return true;
     } else {
@@ -123,7 +123,7 @@ bool Collider::isColliderInside(const Collider& other) const
 
 bool Collider::isColliding(const Collider& other) const
 {
-    if (distanceTo(other) <= (radius + other.radius))
+    if (distanceTo(other) <= (radius_ + other.radius_))
     {
         return true;
     }
@@ -135,7 +135,7 @@ bool Collider::isColliding(const Collider& other) const
 
 bool Collider::isPointInside(const Vec2d& point) const
 {
-    if (distanceTo(point)<=radius)
+    if (distanceTo(point)<=radius_)
     {
         return true;
     }
@@ -180,7 +180,7 @@ bool Collider::operator>(const Vec2d& point) const
 
 void Collider::affiche(std::ostream& o) const
 {
-    o<<"Collider: position = <" << center << "> radius = < "<< radius << ">"<< std::endl;
+    o<<"Collider: position = <" << center_ << "> radius = < "<< radius_ << ">"<< std::endl;
 }
 
 std::ostream& operator<<(std::ostream& sortie, const Collider& co)

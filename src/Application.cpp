@@ -483,6 +483,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 {
     // zoom factor
     auto const ZOOM = 1.1f;
+
     switch (event.type) {
     case sf::Event::Closed:
         window.close();
@@ -516,7 +517,6 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
         // generates a new simulation
         case sf::Keyboard::R:
-            std::cout << "Keyboard R" << std::endl;
 	  if (not mIgnoreEnv){
 	    mIsResetting = true;
 	    getEnv().reset();

@@ -9,6 +9,8 @@
 #include <Utility/Vec2d.hpp>
 #include <Random/Random.hpp>
 
+FlowerGenerator ::FlowerGenerator():
+    counter(sf::Time::Zero) {}
 
 void FlowerGenerator::update(sf::Time dt)
 {
