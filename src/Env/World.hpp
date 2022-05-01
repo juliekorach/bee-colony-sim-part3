@@ -168,10 +168,10 @@ private:
   /**
    * @brief indicates the position of a cell in cells_
    *
-   * @param the coordinates (i and y) of a cell
+   * @param the coordinates (x and y) of a cell
    *
    * @return the position of a cell in cells_
    */
-  int index(int i, int y);
+  int index(int x, int y);
 };
 
