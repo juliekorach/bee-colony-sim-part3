@@ -11,8 +11,8 @@
 #include <cassert>
 
 void FakeHive::addTestBee() {
-  // TODO UNCOMMENT WHEN HIVE::ADDBEE IS CODED
-  //addBee();
+  //TODO UNCOMMENT WHEN HIVE::ADDBEE IS CODED
+  addBee();
 }
 
 std::string HiveTest::getWindowTitle() const {

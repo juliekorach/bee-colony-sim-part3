@@ -20,12 +20,18 @@ public :
 
     Bee(double const& radius, Vec2d const& center, double energyLevel, double speed, Hive &hive);
 
-    j::Value const& getConfig(); virtual
+    Bee(const Bee& bee) = default;
+
+    virtual j::Value const& getConfig() const;
 
     void update(sf::Time dt);
 
     void drawOn(sf::RenderTarget &target) const;
 
+    //virtual sf::Texture getTexture() const = 0;
+    virtual sf::Texture const& getTexture() const;
+
+    double getEnergy();
 
 private:
     Vec2d speed_;

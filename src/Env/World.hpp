@@ -27,6 +27,8 @@ public:
   */
  World() = default;
 
+ World(const World& world) = delete;
+
  /**
   * @brief destructor
   */
@@ -186,11 +188,11 @@ public:
  /**
   * @brief indicates the position of a cell in cells_
   *
-  * @param the coordinates (i and y) of a cell
+  * @param the coordinates (x and y) of a cell
   *
   * @return the position of a cell in cells_
   */
- int index(int i, int y) const;
+ int index(int x, int y) const;
 
- std::vector<std::size_t> nonToricIndexes(Vec2d const& topLeft, Vec2d const& bottomRight) const;
+ //std::vector<std::size_t> nonToricIndexes(Vec2d const& topLeft, Vec2d const& bottomRight) const;
 };

@@ -35,6 +35,9 @@ public:
 
   bool isHiveable();
 
+  Hive(const Hive& hive) = delete;
+
+
 protected:
 
   void addBee();

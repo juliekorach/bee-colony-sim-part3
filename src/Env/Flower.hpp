@@ -19,6 +19,7 @@
 class Flower : public Collider, public Drawable, public Updatable {
 public:
    Flower(double const& p, double const& r, Vec2d const& c);
+   Flower(const Flower& flower) = default;
    ~Flower() = default;
    double takePollen();
    void drawOn(sf::RenderTarget& target) const;

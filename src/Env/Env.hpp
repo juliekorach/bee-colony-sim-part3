@@ -21,6 +21,8 @@ public :
    */
  Env ();
 
+ Env(const Env& env)=default;
+
  /**
   * @brief destructor
   */
@@ -100,10 +102,6 @@ public :
  std::vector<Hive *>& getHives();
 
  bool addHiveAt(const Vec2d& position);
-
- bool IsCollidingHive(Hive* &hive) const;
-
- bool IsCollidingFlower(Hive* &hive) const;
 
  Hive* getCollidingHive(const Collider& body);
 

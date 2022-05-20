@@ -11,13 +11,10 @@ Bee::Bee(double const& radius, Vec2d const& center, double energyLevel, double s
 
 }
 
-j::Value const& Bee::getConfig()
+j::Value const& Bee::getConfig() const
 {
     return getValueConfig()["simulation"]["bees"]["scout"];
 }
-
-
-
 
 void Bee::update(sf::Time dt)
 {
@@ -38,16 +35,14 @@ void Bee::update(sf::Time dt)
     }
     else
     {
-        double beta;
-        if(bernoulli(0.5))
-        {
-            beta = PI/4;
-        }
-        else
-        {
-            beta = -PI/4;
-        }
+        double beta = (bernoulli(0.5) ? PI/4 : -PI/4);
        speed_.rotate(beta);
+    }
+
+    energyLevel_ -= 0.1 * dt.asSeconds();
+    if(energyLevel_<0)
+    {
+        energyLevel_ = 0;
     }
 }
 
@@ -57,14 +52,22 @@ void Bee::drawOn(sf::RenderTarget &target) const
     double radius = getRadius();
     double alpha = speed_.angle();
 
-    auto beeSprite = buildSprite(center,radius,getAppTexture(getValueConfig()["simulation"]["bees"]["scout"]["texture"].toString())) ;
-    if (cos(alpha)<=0)
+    auto beeSprite = buildSprite(center,radius,getTexture()) ;
+    if (alpha > PI/2 or alpha < -PI/2)
     {
 
         beeSprite.scale(1, -1);
         beeSprite.rotate(alpha/DEG_TO_RAD);
     }
     target.draw(beeSprite);
-    //beeprite.rotate(alpha/57.296);
 }
 
+double Bee::getEnergy()
+{
+    return energyLevel_;
+}
+
+sf::Texture const& Bee::getTexture() const
+{
+    return getAppTexture(getConfig()["texture"].toString());
+}
